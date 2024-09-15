@@ -1,0 +1,55 @@
+//Arduino-Digital-Hourglass
+
+
+
+const int switchPin = 8;
+unsigned long previousTime = 0;
+
+int switchState = 0;
+int prevSwitchState =0;
+
+int led =2;
+
+long interval = 6000;
+
+void setup(){
+  for(int i=2; i<8; i++){
+  pinMode(i , OUTPUT);
+}
+
+pinMode(switchPin, INPUT);
+}
+
+
+void loop(){
+  unsigned long currentTime = millis();
+
+  if(currentTime - previousTime > interval && currentTime <= 36000){
+    previousTime = currentTime;
+    digitalWrite (led, HIGH);
+    led++;
+  }
+
+  if (led == 7){
+    delay(50);
+      digitalWrite(7, LOW);
+      delay(1000);
+      digitalWrite(7, HIGH);
+      delay(1000);
+      digitalWrite(7, LOW);
+      delay(1000);
+    }
+
+  switchState = digitalRead(switchPin);
+
+  if(switchState != prevSwitchState){
+    for(int j=2; j<8; j++){
+      digitalWrite(j,LOW);
+    }
+
+    led = 2;
+    previousTime = currentTime;
+  }
+
+  prevSwitchState = switchState;
+}
